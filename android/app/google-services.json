@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "724083544389",
+    "project_id": "projetbinome-a4d5b",
+    "storage_bucket": "projetbinome-a4d5b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724083544389:android:1b1846279cc16cae3f2e2c",
+        "android_client_info": {
+          "package_name": "com.example.projet_binome"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsH0MfwKVF0hbvP9wzmXTGquSNR87nt30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
