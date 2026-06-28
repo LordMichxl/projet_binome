@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 class UserModel {
   final String uid;
   final String email;
@@ -11,7 +10,7 @@ class UserModel {
   final List<String> disponibilites;
   final double noteMoyenne;
   final int nombreNotes;
-=======
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
@@ -22,13 +21,11 @@ class UserModel {
   final String bio;
   final List<String> skills; 
   final List<String> lookingFor;
-  final Map<String, bool> availability; 
->>>>>>> e4e1100c3cfd93e8b4e4abe5437f2464269f7466
+  final Map<String, bool> availability;
   final DateTime createdAt;
 
   UserModel({
     required this.uid,
-<<<<<<< HEAD
     required this.email,
     required this.nom,
     required this.prenom,
@@ -80,7 +77,6 @@ class UserModel {
     );
   }
 }
-=======
     required this.name,
     required this.email,
     this.photoUrl,
@@ -139,4 +135,3 @@ class UserModel {
     );
   }
 }
->>>>>>> e4e1100c3cfd93e8b4e4abe5437f2464269f7466
