@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel {
   final String uid;
   final String email;
@@ -46,7 +45,7 @@ class UserModel {
       email: map['email'] ?? '',
       name: map['name'] ?? '',
       sector: map['sector'] ?? '',
-      level: map['leve'] ?? '',
+      level: map['level'] ?? '',
       photoUrl: map['photoUrl'],
       skills: List<String>.from(map['skills'] ?? []),
       lookingFor: List<String>.from(map['lookingFor'] ?? []),
