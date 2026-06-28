@@ -1,13 +1,9 @@
-// lib/providers/auth_provider.dart
-// Gestion de l'état de l'authentification avec Riverpod
-//
-// Riverpod = comme Provider mais plus puissant.
-// Un "provider" = une source de données que les widgets peuvent écouter.
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
 import '../models/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) {
   return AuthService();
@@ -130,6 +126,76 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   void effacerErreur() {
     state = state.copyWith(effacerErreur: true);
+  }
+
+  Future<void> updateProfile({
+    String? name,
+    String? sector,
+    String? level,
+    String? photoUrl,
+  }) async {
+    final currentUser = state.user;
+    if (currentUser == null) return;
+
+    final updatedUser = currentUser.copyWith(
+      name: name,
+      sector: sector,
+      level: level,
+      photoUrl: photoUrl,
+    );
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.uid)
+        .set(updatedUser.toMap(), SetOptions(merge: true));
+
+    state = state.copyWith(user: updatedUser);
+  }
+
+  Future<void> addSkill(String skill) async {
+    final currentUser = state.user;
+    if (currentUser == null || currentUser.skills.contains(skill)) return;
+
+    final updatedUser = currentUser.copyWith(skills: [...currentUser.skills, skill]);
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.uid)
+        .set({'skills': updatedUser.skills}, SetOptions(merge: true));
+
+    state = state.copyWith(user: updatedUser);
+  }
+
+  Future<void> removeSkill(String skill) async {
+    final currentUser = state.user;
+    if (currentUser == null) return;
+
+    final updatedSkills = currentUser.skills.where((s) => s != skill).toList();
+    final updatedUser = currentUser.copyWith(skills: updatedSkills);
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.uid)
+        .set({'skills': updatedSkills}, SetOptions(merge: true));
+
+    state = state.copyWith(user: updatedUser);
+  }
+
+  Future<void> toggleAvailability(String day) async {
+    final currentUser = state.user;
+    if (currentUser == null) return;
+
+    final updatedAvailability = Map<String, bool>.from(currentUser.availability);
+    updatedAvailability[day] = !(updatedAvailability[day] ?? false);
+
+    final updatedUser = currentUser.copyWith(availability: updatedAvailability);
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.uid)
+        .set({'availability': updatedAvailability}, SetOptions(merge: true));
+
+    state = state.copyWith(user: updatedUser);
   }
 }
 

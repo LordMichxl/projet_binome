@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum NotificationType { matchRequest, matchAccepted, newMessage }
 
@@ -33,7 +32,9 @@ class NotificationModel {
       type: notificationTypeFromString(map['type'] ?? 'matchRequest'),
       message: map['message'] ?? '',
       read: map['read'] ?? false,
-      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: DateTime.parse(
+        map['createdAt'] ?? DateTime.now().toIso8601String(),
+      ),
     );
   }
 

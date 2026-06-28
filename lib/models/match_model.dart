@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum MatchStatus { pending, accepted, refused }
 
@@ -26,14 +25,15 @@ class MatchModel {
 
   List<String> get users => [requesterId, receiverId];
 
-  factory MatchModel.fromFirestore(Map<String, dynamic> map, String id) {
+  factory MatchModel.fromMap(Map<String, dynamic> map, String id) {
     return MatchModel(
       id: id,
       requesterId: map['requesterId'] ?? '',
       receiverId: map['receiverId'] ?? '',
       status: matchStatusFromString(map['status'] ?? 'pending'),
-      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: DateTime.parse(
+        map['createdAt'] ?? DateTime.now().toIso8601String(),
+      ),
     );
   }
-
 }
