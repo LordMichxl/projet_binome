@@ -1,59 +1,41 @@
-class UserModel {
-  final String uid;
-  final String email;
-  final String nom;
-  final String prenom;
-  final String filiere;
-  final String niveau;
-  final String? photoUrl;
-  final List<String> competences;
-  final List<String> disponibilites;
-  final double noteMoyenne;
-  final int nombreNotes;
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 class UserModel {
   final String uid;
-  final String name;
   final String email;
+  final String name;
+  final String sector;
+  final String level;
   final String? photoUrl;
-  final String bio;
-  final List<String> skills; 
+  final List<String> skills;
   final List<String> lookingFor;
-  final Map<String, bool> availability;
+  final Map<String, bool> availability; 
   final DateTime createdAt;
 
   UserModel({
     required this.uid,
     required this.email,
-    required this.nom,
-    required this.prenom,
-    required this.filiere,
-    required this.niveau,
+    required this.name,
+    required this.sector,
+    required this.level,
     this.photoUrl,
-    this.competences = const [],
-    this.disponibilites = const [],
-    this.noteMoyenne = 0.0,
-    this.nombreNotes = 0,
+    this.skills = const [],
+    this.lookingFor = const [],
+    this.availability = const {},
     required this.createdAt,
   });
 
-  String get nomComplet => '$prenom $nom';
 
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
       'email': email,
-      'nom': nom,
-      'prenom': prenom,
-      'filiere': filiere,
-      'niveau': niveau,
+      'name': name,
+      'sector': sector,
+      'level': level,
       'photoUrl': photoUrl,
-      'competences': competences,
-      'disponibilites': disponibilites,
-      'noteMoyenne': noteMoyenne,
-      'nombreNotes': nombreNotes,
+      'skills': skills,
+      'lookingFor': lookingFor,
+      'availability': availability,
       'createdAt': createdAt.toIso8601String(),
     };
   }
@@ -62,62 +44,23 @@ class UserModel {
     return UserModel(
       uid: map['uid'] ?? '',
       email: map['email'] ?? '',
-      nom: map['nom'] ?? '',
-      prenom: map['prenom'] ?? '',
-      filiere: map['filiere'] ?? '',
-      niveau: map['niveau'] ?? '',
+      name: map['name'] ?? '',
+      sector: map['sector'] ?? '',
+      level: map['leve'] ?? '',
       photoUrl: map['photoUrl'],
-      competences: List<String>.from(map['competences'] ?? []),
-      disponibilites: List<String>.from(map['disponibilites'] ?? []),
-      noteMoyenne: (map['noteMoyenne'] ?? 0.0).toDouble(),
-      nombreNotes: map['nombreNotes'] ?? 0,
+      skills: List<String>.from(map['skills'] ?? []),
+      lookingFor: List<String>.from(map['lookingFor'] ?? []),
+      availability: Map<String, bool>.from(map['availability'] ?? {}),
       createdAt: DateTime.parse(
         map['createdAt'] ?? DateTime.now().toIso8601String(),
       ),
     );
   }
-}
-    required this.name,
-    required this.email,
-    this.photoUrl,
-    this.bio = '',
-    this.skills = const [],
-    this.lookingFor = const [],
-    this.availability = const {},
-    required this.createdAt,
-  });
-
-  factory UserModel.fromFirestore(Map<String, dynamic> data, String uid) {
-    return UserModel(
-      uid: uid,
-      name: data['name'] ?? '',
-      email: data['email'] ?? '',
-      photoUrl: data['photoUrl'],
-      bio: data['bio'] ?? '',
-      skills: List<String>.from(data['skills'] ?? []),
-      lookingFor: List<String>.from(data['lookingFor'] ?? []),
-      availability: Map<String, bool>.from(data['availability'] ?? {}),
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'email': email,
-      'photoUrl': photoUrl,
-      'bio': bio,
-      'skills': skills,
-      'lookingFor': lookingFor,
-      'availability': availability,
-      'createdAt': Timestamp.fromDate(createdAt),
-    };
-  }
-
-  UserModel copyWith({
+    UserModel copyWith({
     String? name,
-    String? bio,
     String? photoUrl,
+    String? sector,
+    String? level,
     List<String>? skills,
     List<String>? lookingFor,
     Map<String, bool>? availability,
@@ -127,11 +70,17 @@ class UserModel {
       name: name ?? this.name,
       email: email,
       photoUrl: photoUrl ?? this.photoUrl,
-      bio: bio ?? this.bio,
+      sector: sector ?? this.sector,
+      level: level ?? this.level,
       skills: skills ?? this.skills,
       lookingFor: lookingFor ?? this.lookingFor,
       availability: availability ?? this.availability,
       createdAt: createdAt,
     );
   }
+
 }
+  
+ 
+
+

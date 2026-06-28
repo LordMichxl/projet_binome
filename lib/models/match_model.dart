@@ -26,22 +26,14 @@ class MatchModel {
 
   List<String> get users => [requesterId, receiverId];
 
-  factory MatchModel.fromFirestore(Map<String, dynamic> data, String id) {
+  factory MatchModel.fromFirestore(Map<String, dynamic> map, String id) {
     return MatchModel(
       id: id,
-      requesterId: data['requesterId'] ?? '',
-      receiverId: data['receiverId'] ?? '',
-      status: matchStatusFromString(data['status'] ?? 'pending'),
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      requesterId: map['requesterId'] ?? '',
+      receiverId: map['receiverId'] ?? '',
+      status: matchStatusFromString(map['status'] ?? 'pending'),
+      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'requesterId': requesterId,
-      'receiverId': receiverId,
-      'status': status.name,
-      'createdAt': Timestamp.fromDate(createdAt),
-    };
-  }
 }

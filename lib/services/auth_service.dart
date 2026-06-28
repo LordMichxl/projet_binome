@@ -16,10 +16,9 @@ class AuthService {
   Future<UserModel> inscrire({
     required String email,
     required String password,
-    required String nom,
-    required String prenom,
-    required String filiere,
-    required String niveau,
+    required String name,
+    required String sector,
+    required String level,
   }) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
@@ -32,10 +31,9 @@ class AuthService {
       final userModel = UserModel(
         uid: uid,
         email: email,
-        nom: nom,
-        prenom: prenom,
-        filiere: filiere,
-        niveau: niveau,
+        name: name,
+        sector: sector,
+        level: level,
         createdAt: DateTime.now(),
       );
 
