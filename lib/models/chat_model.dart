@@ -13,7 +13,7 @@ class ChatModel {
     this.lastMessageAt,
   });
 
-  factory ChatModel.fromFirestore(Map<String, dynamic> data, String id) {
+  factory ChatModel.fromMap(Map<String, dynamic> data, String id) {
     return ChatModel(
       id: id,
       participants: List<String>.from(data['participants'] ?? []),

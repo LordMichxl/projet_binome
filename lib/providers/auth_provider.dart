@@ -51,10 +51,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<bool> inscrire({
     required String email,
     required String password,
-    required String nom,
-    required String prenom,
-    required String filiere,
-    required String niveau,
+    required String name,
+    required String sector,
+    required String level,
   }) async {
     state = state.copyWith(chargement: true, effacerErreur: true);
 
@@ -62,10 +61,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final user = await _authService.inscrire(
         email: email,
         password: password,
-        nom: nom,
-        prenom: prenom,
-        filiere: filiere,
-        niveau: niveau,
+        name: name,
+        sector: sector,
+        level: level,
       );
 
       state = state.copyWith(chargement: false, user: user);

@@ -26,24 +26,15 @@ class NotificationModel {
     required this.createdAt,
   });
 
-  factory NotificationModel.fromFirestore(Map<String, dynamic> data, String id) {
+  factory NotificationModel.fromMap(Map<String, dynamic> map, String id) {
     return NotificationModel(
       id: id,
-      targetUid: data['targetUid'] ?? '',
-      type: notificationTypeFromString(data['type'] ?? 'matchRequest'),
-      message: data['message'] ?? '',
-      read: data['read'] ?? false,
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      targetUid: map['targetUid'] ?? '',
+      type: notificationTypeFromString(map['type'] ?? 'matchRequest'),
+      message: map['message'] ?? '',
+      read: map['read'] ?? false,
+      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'targetUid': targetUid,
-      'type': type.name,
-      'message': message,
-      'read': read,
-      'createdAt': Timestamp.fromDate(createdAt),
-    };
-  }
 }

@@ -13,20 +13,14 @@ class MessageModel {
     required this.sentAt,
   });
 
-  factory MessageModel.fromFirestore(Map<String, dynamic> data, String id) {
+  factory MessageModel.fromMap(Map<String, dynamic> map, String id) {
     return MessageModel(
       id: id,
-      senderId: data['senderId'] ?? '',
-      text: data['text'] ?? '',
-      sentAt: (data['sentAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      senderId: map['senderId'] ?? '',
+      text: map['text'] ?? '',
+      sentAt: DateTime.parse(
+        map['createdAt'] ?? DateTime.now().toIso8601String(),
+      ),
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'senderId': senderId,
-      'text': text,
-      'sentAt': Timestamp.fromDate(sentAt),
-    };
   }
 }

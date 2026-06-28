@@ -18,8 +18,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey       = GlobalKey<FormState>();
   int _etapeActuelle   = 0;
 
-  final _prenomCtrl    = TextEditingController();
-  final _nomCtrl       = TextEditingController();
+  final _nameCtrl    = TextEditingController();
   final _emailCtrl     = TextEditingController();
   final _passwordCtrl  = TextEditingController();
   final _confirmCtrl   = TextEditingController();
@@ -31,8 +30,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   @override
   void dispose() {
-    _prenomCtrl.dispose();
-    _nomCtrl.dispose();
+    _nameCtrl.dispose();
     _emailCtrl.dispose();
     _passwordCtrl.dispose();
     _confirmCtrl.dispose();
@@ -55,10 +53,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final succes = await ref.read(authProvider.notifier).inscrire(
       email: _emailCtrl.text.trim(),
       password: _passwordCtrl.text.trim(),
-      nom: _nomCtrl.text.trim(),
-      prenom: _prenomCtrl.text.trim(),
-      filiere: _filiereChoisie,
-      niveau: _niveauChoisi,
+      name: _nameCtrl.text.trim(),
+      sector: _filiereChoisie,
+      level: _niveauChoisi,
     );
 
     if (!succes && mounted) {
@@ -188,20 +185,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           children: [
             Expanded(
               child: ChampTexte(
-                label: 'Prénom',
-                controller: _prenomCtrl,
-                prefixIcon: const Icon(Icons.person_outline),
-                onChanged: (_) =>
-                    ref.read(authProvider.notifier).effacerErreur(),
-                validateur: (v) =>
-                    v!.trim().isEmpty ? 'Requis' : null,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: ChampTexte(
-                label: 'Nom',
-                controller: _nomCtrl,
+                label: 'Nom complet',
+                controller: _nameCtrl,
                 onChanged: (_) =>
                     ref.read(authProvider.notifier).effacerErreur(),
                 validateur: (v) =>

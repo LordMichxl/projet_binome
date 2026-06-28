@@ -34,8 +34,8 @@ class HomeScreen extends ConsumerWidget {
               radius: 45,
               backgroundColor: kCouleurAccent,
               child: Text(
-                user?.prenom.isNotEmpty == true
-                    ? user!.prenom[0].toUpperCase()
+                user?.name.isNotEmpty == true
+                    ? user!.name[0].toUpperCase()
                     : '?',
                 style: const TextStyle(
                   fontSize: 36,
@@ -47,7 +47,7 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 16),
 
             Text(
-              'Bienvenue, ${user?.prenom ?? ''} ! 👋',
+              'Bienvenue, ${user?.name ?? ''} ',
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -55,7 +55,7 @@ class HomeScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              '${user?.filiere ?? ''} • ${user?.niveau ?? ''}',
+              '${user?.sector ?? ''} - ${user?.level ?? ''}',
               style: const TextStyle(color: kCouleurGris),
             ),
 
