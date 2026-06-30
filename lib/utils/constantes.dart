@@ -14,7 +14,7 @@ const double kPadding      = 16.0;
 const double kPaddingSmall = 8.0;
 const double kRadius       = 12.0;
 
-const List<String> kFilieres = [
+const List<String> kSectors = [
   'Informatique',
   'Réseaux & Télécoms',
   'Génie Logiciel',
@@ -24,25 +24,26 @@ const List<String> kFilieres = [
   'Autre',
 ];
 
-const List<String> kNiveaux = [
+const List<String> kLevels = [
   'L1', 'L2', 'L3', 'M1', 'M2',
 ];
 
-const List<String> kCompetences = [
+const List<String> kSkills = [
   'Flutter', 'Dart', 'Python', 'Java', 'JavaScript',
   'React', 'Node.js', 'Firebase', 'SQL', 'MongoDB',
   'C++', 'C', 'PHP', 'Laravel', 'Spring Boot',
   'Machine Learning', 'Linux', 'Git', 'Docker', 'AWS',
 ];
 
-const List<String> kDisponibilites = [
-  'Lundi matin', 'Lundi après-midi', 'Lundi soir',
-  'Mardi matin', 'Mardi après-midi', 'Mardi soir',
-  'Mercredi matin', 'Mercredi après-midi', 'Mercredi soir',
-  'Jeudi matin', 'Jeudi après-midi', 'Jeudi soir',
-  'Vendredi matin', 'Vendredi après-midi', 'Vendredi soir',
-  'Samedi matin', 'Samedi après-midi',
-];
+const Map<String, bool> kAvailabilityDefaut = {
+  'Lundi': false,
+  'Mardi': false,
+  'Mercredi': false,
+  'Jeudi': false,
+  'Vendredi': false,
+  'Samedi': false,
+  'Dimanche': false,
+};
 
 ThemeData get kTheme => ThemeData(
   primaryColor: kCouleurPrimaire,

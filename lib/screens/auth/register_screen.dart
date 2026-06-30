@@ -23,8 +23,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _passwordCtrl  = TextEditingController();
   final _confirmCtrl   = TextEditingController();
 
-  String _filiereChoisie = kFilieres.first;
-  String _niveauChoisi   = kNiveaux.first;
+  String _filiereChoisie = kSectors.first;
+  String _niveauChoisi   = kLevels.first;
   bool _voirPassword     = false;
   bool _voirConfirm      = false;
 
@@ -291,7 +291,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             filled: true,
             fillColor: Colors.white,
           ),
-          items: kFilieres
+          items: kSectors
               .map((f) => DropdownMenuItem(value: f, child: Text(f)))
               .toList(),
           onChanged: (v) => setState(() => _filiereChoisie = v!),
@@ -309,7 +309,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             filled: true,
             fillColor: Colors.white,
           ),
-          items: kNiveaux
+          items: kLevels
               .map((n) => DropdownMenuItem(value: n, child: Text(n)))
               .toList(),
           onChanged: (v) => setState(() => _niveauChoisi = v!),

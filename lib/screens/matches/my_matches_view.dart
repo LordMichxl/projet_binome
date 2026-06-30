@@ -384,7 +384,6 @@ class _CarteMatch extends ConsumerWidget {
         '${date.year}';
   }
 }
-
 class _BinomesConfirmes extends ConsumerWidget {
   final String uid;
   const _BinomesConfirmes({required this.uid});
@@ -392,81 +391,57 @@ class _BinomesConfirmes extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(matchControllerProvider);
-
-  
-    final streamRequester = controller.getBinomesConfirmes(uid);
-
-  
-    final streamReceiver = ref
-        .read(matchControllerProvider)
-        ._db
-        .collection('matches')
-        .where('receiverId', isEqualTo: uid)
-        .where('status', isEqualTo: 'accepted')
-        .snapshots()
-        .map((s) => s.docs
-            .map((d) => MatchModel.fromFirestore(d.data(), d.id))
-            .toList());
+    final stream = controller.getTousBinomesConfirmes(uid);
 
     return StreamBuilder<List<MatchModel>>(
-      stream: streamRequester,
-      builder: (ctx, snapR) {
-        return StreamBuilder<List<MatchModel>>(
-          stream: streamReceiver,
-          builder: (ctx2, snapRec) {
-            if (snapR.connectionState == ConnectionState.waiting ||
-                snapRec.connectionState == ConnectionState.waiting) {
-              return const Center(
-                  child: CircularProgressIndicator(color: kCouleurPrimaire));
-            }
+      stream: stream,
+      builder: (ctx, snap) {
+        if (snap.connectionState == ConnectionState.waiting) {
+          return const Center(
+              child: CircularProgressIndicator(color: kCouleurPrimaire));
+        }
 
-            final tous = [
-              ...(snapR.data ?? []),
-              ...(snapRec.data ?? []),
-            ];
+        final tous = snap.data ?? [];
 
-            if (tous.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.handshake_outlined,
-                      size: 64,
-                      color: kCouleurGris.withOpacity(0.4),
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'Aucun binôme confirmé pour le moment',
-                      style: TextStyle(color: kCouleurGris, fontSize: 15),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 6),
-                    const Text(
-                      'Acceptez une demande pour former un binôme !',
-                      style: TextStyle(color: kCouleurGris, fontSize: 13),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+        if (tous.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.handshake_outlined,
+                  size: 64,
+                  color: kCouleurGris.withOpacity(0.4),
                 ),
-              );
-            }
+                const SizedBox(height: 12),
+                const Text(
+                  'Aucun binôme confirmé pour le moment',
+                  style: TextStyle(color: kCouleurGris, fontSize: 15),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Acceptez une demande pour former un binôme !',
+                  style: TextStyle(color: kCouleurGris, fontSize: 13),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
+        }
 
-            return ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: kPaddingSmall),
-              itemCount: tous.length,
-              itemBuilder: (ctx3, i) => _CarteBinomeConfirme(
-                match: tous[i],
-                myUid: uid,
-              ),
-            );
-          },
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: kPaddingSmall),
+          itemCount: tous.length,
+          itemBuilder: (ctx2, i) => _CarteBinomeConfirme(
+            match: tous[i],
+            myUid: uid,
+          ),
         );
       },
     );
   }
 }
-
 class _CarteBinomeConfirme extends ConsumerWidget {
   final MatchModel match;
   final String myUid;
@@ -579,6 +554,3 @@ class _CarteBinomeConfirme extends ConsumerWidget {
   }
 }
 
-extension MatchControllerExt on MatchController {
-  FirebaseFirestore get _db => FirebaseFirestore.instance;
-}

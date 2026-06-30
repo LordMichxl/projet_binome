@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MessageModel {
   final String id;
@@ -13,13 +14,15 @@ class MessageModel {
   });
 
   factory MessageModel.fromMap(Map<String, dynamic> map, String id) {
+    DateTime parsedDate = DateTime.now();
+    if (map['createdAt'] != null && map['createdAt'] is Timestamp) {
+      parsedDate = (map['createdAt'] as Timestamp).toDate();
+    }
     return MessageModel(
       id: id,
       senderId: map['senderId'] ?? '',
       text: map['text'] ?? '',
-      sentAt: DateTime.parse(
-        map['createdAt'] ?? DateTime.now().toIso8601String(),
-      ),
+      sentAt:parsedDate
     );
   }
 }
