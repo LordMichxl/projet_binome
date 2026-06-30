@@ -6,6 +6,7 @@ import '../providers/auth_provider.dart';
 import '../utils/constantes.dart';
 import 'search/search_view.dart';
 import 'matches/my_matches_view.dart';
+import 'profile/profile_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
