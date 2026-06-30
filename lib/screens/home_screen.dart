@@ -1,87 +1,59 @@
-// lib/screens/home_screen.dart
-// Écran principal (placeholder) — à compléter par Michel avec les autres fonctionnalités
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
 import '../utils/constantes.dart';
+import 'search/search_view.dart';
+import 'matches/my_matches_view.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  int _index = 0;
+
+  final List<Widget> _ecrans = const [
+    SearchView(),
+    MyMatchesView(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('TrouveTonBinôme'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Déconnexion',
-            onPressed: () async {
-              await ref.read(authProvider.notifier).deconnecter();
-            },
+      body: _ecrans[_index],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _index,
+        onDestinationSelected: (i) => setState(() => _index = i),
+        backgroundColor: Colors.white,
+        indicatorColor: kCouleurAccent,
+        destinations: [
+          const NavigationDestination(
+            icon: Icon(Icons.search),
+            selectedIcon: Icon(Icons.search, color: kCouleurPrimaire),
+            label: 'Recherche',
+          ),
+          const NavigationDestination(
+            icon: Icon(Icons.handshake_outlined),
+            selectedIcon: Icon(Icons.handshake, color: kCouleurPrimaire),
+            label: 'Mes binômes',
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 45,
-              backgroundColor: kCouleurAccent,
-              child: Text(
-                user?.name.isNotEmpty == true
-                    ? user!.name[0].toUpperCase()
-                    : '?',
-                style: const TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: kCouleurPrimaire,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            Text(
-              'Bienvenue, ${user?.name ?? ''} ',
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              '${user?.sector ?? ''} - ${user?.level ?? ''}',
-              style: const TextStyle(color: kCouleurGris),
-            ),
-
-            const SizedBox(height: 40),
-
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: kPadding * 2),
-              padding: const EdgeInsets.all(kPadding),
-              decoration: BoxDecoration(
-                color: kCouleurAccent.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(kRadius),
-              ),
-              child: const Column(
-                children: [
-                  Icon(Icons.construction, color: kCouleurPrimaire, size: 32),
-                  SizedBox(height: 8),
-                  Text(
-                    'Les autres fonctionnalités seront ajoutées ici.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: kCouleurPrimaire),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+      floatingActionButton: FloatingActionButton.small(
+        backgroundColor: kCouleurGris.withOpacity(0.15),
+        elevation: 0,
+        tooltip: 'Déconnexion',
+        onPressed: () async {
+          await ref.read(authProvider.notifier).deconnecter();
+        },
+        child: const Icon(Icons.logout, color: kCouleurGris),
       ),
     );
   }
